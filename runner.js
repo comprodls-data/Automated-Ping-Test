@@ -9,7 +9,36 @@ var limitExecution= 40;
 var waitTime= 10000;
 
 function testStatus () {
+   // Checking if we have enough credits
+   var url= 'https://api.wheresitup.com/v4/credits/';
+   Request
+     .get(url)
+     .set({'Auth' :"Bearer 5de6446d51a5406ae718babe d6da8291cbc4a91560e9396e4dfb463c"})
+     .end(function (err, res) {
+       if (err) {
+          Logger.logError("Error in getting credits count "+err);
+        }
+       else {
+          console.log("Successfuly got the credits");
+          console.log(res.text); //TODO: remove me
+          if( 2*(param.countries.length) <= JSON.parse(res.text).current) {
+            executor.statusPageUpdate ("credits", true, function(){
+              runTest();
+            });
+          } else {
+            Logger.logError("Not enough credits");
+            executor.statusPageUpdate ("credits", false, function() {
+              console.log("Updated status page");
+            });
+          }
+       }
+     });
+ 
+  }
 
+  testStatus();
+
+  function runTest () {
     var url= 'https://api.wheresitup.com/v4/jobs';
     Request
       .post(url)
@@ -25,10 +54,8 @@ function testStatus () {
            var jobId = JSON.parse(res.text).jobID;
            pollingF(jobId, 0);
         }
-      });  
+      });      
   }
-
-  testStatus();
 
   function pollingF (jobId, counter) {
     if( counter == limitExecution) {
