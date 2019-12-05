@@ -20,7 +20,6 @@ function testStatus () {
         }
        else {
           console.log("Successfuly got the credits");
-          console.log(res.text); //TODO: remove me
           if( 2*(param.countries.length) <= JSON.parse(res.text).current) {
             executor.statusPageUpdate ("credits", true, function(){
               runTest();
