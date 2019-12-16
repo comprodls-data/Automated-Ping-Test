@@ -10,10 +10,10 @@ var waitTime= 10000;
 
 function testStatus () {
    // Checking if we have enough credits
-   var url= 'https://api.wheresitup.com/v4/credits/';
+   var url= param.whereisitup+'/credits/';
    Request
      .get(url)
-     .set({'Auth' :"Bearer 5de6446d51a5406ae718babe d6da8291cbc4a91560e9396e4dfb463c"})
+     .set({'Auth' :param.token})
      .end(function (err, res) {
        if (err) {
           Logger.logError("Error in getting credits count "+err);
@@ -38,12 +38,12 @@ function testStatus () {
   testStatus();
 
   function runTest () {
-    var url= 'https://api.wheresitup.com/v4/jobs';
+    var url= param.whereisitup+'/jobs';
     Request
       .post(url)
-      .send ({uri:"https://cambridgeone.org", tests:["ping"], sources:param.countries, options:{"ping": {"count": param.pingsCount}}})
+      .send ({uri:param.uri, tests:["ping"], sources:param.countries, options:{"ping": {"count": param.pingsCount}}})
       .set({'content-type' : 'application/json'})
-      .set({'Auth' :"Bearer 5de6446d51a5406ae718babe d6da8291cbc4a91560e9396e4dfb463c"})
+      .set({'Auth' :param.token})
       .end(function (err, res) {
         if (err) {
            Logger.logError("Error in ping test "+err);
@@ -60,7 +60,7 @@ function testStatus () {
     if( counter == limitExecution) {
         Logger.logError("Reached the limit");
     } else {
-    var url= 'https://api.wheresitup.com/v4/jobs/' + jobId;
+    var url= param.whereisitup+'/jobs/' + jobId;
     Request
       .get(url)
       .set({'Auth' :"Bearer 5de6446d51a5406ae718babe d6da8291cbc4a91560e9396e4dfb463c"})
