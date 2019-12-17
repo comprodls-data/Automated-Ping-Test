@@ -63,7 +63,7 @@ function testStatus () {
     var url= param.whereisitup+'/jobs/' + jobId;
     Request
       .get(url)
-      .set({'Auth' :"Bearer 5de6446d51a5406ae718babe d6da8291cbc4a91560e9396e4dfb463c"})
+      .set({'Auth' :param.token})
       .end(function (err, res) {
         if (err) {
            Logger.logError("Error in getting ping test "+err);
